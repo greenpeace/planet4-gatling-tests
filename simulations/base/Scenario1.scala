@@ -40,8 +40,10 @@ class Scenario1 extends Simulation {
 
     object Comment {
 
-        val feeder = csv("comments.csv").random // 1, 2
-        val Post = exec(http("POST wp-comments-post")
+        val feeder = csv("comments.csv").random
+
+        val Post = feed(feeder)
+            .exec(http("POST wp-comments-post")
             .post("/wp-comments-post.php")
             .formParam("comment", "${commentComment}")
             .formParam("author", "${commentAuthor}")
@@ -144,7 +146,8 @@ class Scenario1 extends Simulation {
     }
 
     val visitors = scenario("Visitors").exec(Browse.Home, Browse.Page, Browse.Post)
+    val commentators = scenario("Visitors").exec(Browse.Post, Comment.Post)
     val admins = scenario("Admins").exec(Auth.Login, Auth.Logout)
 
-    setUp(admins.inject(atOnceUsers(1)).protocols(httpConf))
+    setUp(commentators.inject(atOnceUsers(1)).protocols(httpConf))
 }
