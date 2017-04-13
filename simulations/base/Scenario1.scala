@@ -146,8 +146,14 @@ class Scenario1 extends Simulation {
     }
 
     val visitors = scenario("Visitors").exec(Browse.Home, Browse.Page, Browse.Post)
-    val commentators = scenario("Visitors").exec(Browse.Post, Comment.Post)
+    val commentators = scenario("Commentators").exec(Browse.Post, Comment.Post)
     val admins = scenario("Admins").exec(Auth.Login, Auth.Logout)
 
-    setUp(commentators.inject(atOnceUsers(1)).protocols(httpConf))
+    /* setUp(commentators.inject(atOnceUsers(1)).protocols(httpConf)) */
+    setUp(
+      visitors.inject(rampUsers(10) over (10 seconds)),
+      commentators.inject(rampUsers(2) over (10 seconds)),
+      admins.inject(rampUsers(1) over (10 seconds))
+    ).protocols(httpConf)
+
 }
