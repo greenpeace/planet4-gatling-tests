@@ -7,7 +7,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class Scenario1 extends Simulation {
+class Scenario2 extends Simulation {
 
     val conf = ConfigFactory.load()
     val baseURL = conf.getString("application.baseURL")
