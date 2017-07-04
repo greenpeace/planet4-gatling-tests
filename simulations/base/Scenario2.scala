@@ -152,6 +152,7 @@ class Scenario1 extends Simulation {
     /* setUp(commentators.inject(atOnceUsers(1)).protocols(httpConf)) */
     setUp(
       visitors.inject(rampUsers(10) over (10 seconds)),
+      commentators.inject(rampUsers(2) over (10 seconds)),
       admins.inject(rampUsers(1) over (10 seconds))
     ).protocols(httpConf)
 
